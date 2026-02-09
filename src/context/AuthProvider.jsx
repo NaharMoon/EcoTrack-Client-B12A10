@@ -7,14 +7,18 @@ import { useLocation, useNavigate } from 'react-router';
 const AuthProvider = ({ children }) => {
     const navigate = useNavigate();
     const location = useLocation();
+
     const [user, setUser] = useState(null);
     const [loading, setLoading] = useState(true);
+
+    const redirect = () => {
+        return navigate(location.state ? location.state : '/');
+    };
     const handleGoogleSignIn = () => {
         signInWithPopup(auth, googleProvider)
             .then(result => {
                 console.log("Successfull Google SignIn!", result.user);
-                navigate(location.state ? location.state : '/');
-                // navigate(`${location.state ? location.state : "/"}`);
+                redirect();
             })
             .catch(error => {
                 alert(error.message);
@@ -33,19 +37,17 @@ const AuthProvider = ({ children }) => {
     };
 
     useEffect(() => {
-        const unsubscribe = () => {
-            onAuthStateChanged(auth, (currentUser) => {
-                if (currentUser) {
-                    console.log('Current User: ', currentUser);
-                    setUser(currentUser);
-                    setLoading(false);
-                }
-                else {
-                    console.log('No signedIn user found!');
-                    setLoading(false);
-                }
-            })
-        }
+        const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+            if (currentUser) {
+                console.log('Current User: ', currentUser);
+                setUser(currentUser);
+                setLoading(false);
+            }
+            else {
+                console.log('No signedIn user found!');
+                setLoading(false);
+            }
+        })
         return () => unsubscribe();
     }, []);
 
@@ -56,8 +58,9 @@ const AuthProvider = ({ children }) => {
         setUser,
         loading,
         setLoading,
-
+        redirect,
     };
+
     return (
         <div>
             <AuthContext value={authInfo}>
