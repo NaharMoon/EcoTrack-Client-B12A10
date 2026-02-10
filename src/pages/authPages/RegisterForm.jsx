@@ -7,7 +7,7 @@ import { auth } from '../../firebase/firebase.config';
 
 const RegisterForm = () => {
     
-    const {redirect} = useContext(AuthContext);
+    const {redirect,postUserInDB} = useContext(AuthContext);
     const [password, setPassword] = useState('');
     console.log(password);
 
@@ -18,8 +18,30 @@ const RegisterForm = () => {
         // console.log({ email, password });
 
         createUserWithEmailAndPassword(auth, email, password)
-            .then(() => {
+            .then((result) => {
                 alert('Registration Successfull!');
+
+                // //userData
+                // const newUser = {
+                //     user_name : result.user.displayName,
+                //     user_email : result.user.email,
+                //     user_image : result.user.photoURL,
+                // }
+
+                // //GoogleUser Data post in DataBase
+                // fetch('http://localhost:5000/api/users', {
+                //     method: 'POST',
+                //     headers: {
+                //         'content-type' : 'application/json'
+                //     },
+                //     body: JSON.stringify(newUser)
+                // })
+                // .then( res => res.json())
+                // .then( data => {
+                //     console.log('after user saved in DB: ',data);
+                // })
+
+                postUserInDB(result);
                 redirect();
             })
             .catch((error) => {

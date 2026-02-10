@@ -11,13 +11,59 @@ const AuthProvider = ({ children }) => {
     const [user, setUser] = useState(null);
     const [loading, setLoading] = useState(true);
 
+    // reusable custome functions
     const redirect = () => {
         return navigate(location.state ? location.state : '/');
     };
+    const postUserInDB = (result) => {
+        //userData
+        const newUser = {
+            user_name: result.user.displayName,
+            user_email: result.user.email,
+            user_image: result.user.photoURL,
+        }
+
+        //GoogleUser Data post in DataBase
+        fetch('http://localhost:5000/api/users', {
+            method: 'POST',
+            headers: {
+                'content-type': 'application/json'
+            },
+            body: JSON.stringify(newUser)
+        })
+            .then(res => res.json())
+            .then(data => {
+                console.log('after user saved in DB: ', data);
+            })
+    };
+
+    //firebase related functions
     const handleGoogleSignIn = () => {
         signInWithPopup(auth, googleProvider)
             .then(result => {
                 console.log("Successfull Google SignIn!", result.user);
+
+                // //userData
+                // const newUser = {
+                //     user_name: result.user.displayName,
+                //     user_email: result.user.email,
+                //     user_image: result.user.photoURL,
+                // }
+
+                // //GoogleUser Data post in DataBase
+                // fetch('http://localhost:5000/api/users', {
+                //     method: 'POST',
+                //     headers: {
+                //         'content-type': 'application/json'
+                //     },
+                //     body: JSON.stringify(newUser)
+                // })
+                //     .then(res => res.json())
+                //     .then(data => {
+                //         console.log('after user saved in DB: ', data);
+                //     })
+
+                postUserInDB(result);
                 redirect();
             })
             .catch(error => {
@@ -59,6 +105,7 @@ const AuthProvider = ({ children }) => {
         loading,
         setLoading,
         redirect,
+        postUserInDB,
     };
 
     return (
