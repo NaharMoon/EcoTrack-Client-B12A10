@@ -3,6 +3,7 @@ import { onAuthStateChanged, signInWithPopup, signOut } from "firebase/auth";
 import { auth, googleProvider } from '../firebase/firebase.config';
 import { AuthContext } from './AuthContext';
 import { useLocation, useNavigate } from 'react-router';
+import { baseURL } from '../utilities/utility';
 
 const AuthProvider = ({ children }) => {
     const navigate = useNavigate();
@@ -24,7 +25,8 @@ const AuthProvider = ({ children }) => {
         }
 
         //GoogleUser Data post in DataBase
-        fetch('http://localhost:5000/api/users', {
+        // fetch('http://localhost:5000/api/users')
+        fetch(`${baseURL}/api/users`, {
             method: 'POST',
             headers: {
                 'content-type': 'application/json'
