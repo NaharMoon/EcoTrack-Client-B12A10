@@ -12,6 +12,7 @@ import MyActivityDetailPage from "../pages/userActivityPages/myActivityDetailPag
 import ErrorPage from "../pages/errorPage/ErrorPage";
 import PrivateRoute from "./PrivateRoute";
 import AuthProvider from "../context/AuthProvider";
+import { baseURL } from "../utilities/utility";
 
 const router = createBrowserRouter([
     {
@@ -28,16 +29,18 @@ const router = createBrowserRouter([
             {
                 path: '/challenges',
                 element: <ChallengesPage></ChallengesPage>,
+                loader: () => fetch(`${baseURL}/api/challenges`),
             },
             {
                 path: '/challenges/:id',
                 element:
                     <PrivateRoute>
                         <ChallengeDetailPage></ChallengeDetailPage>
-                    </PrivateRoute>
+                    </PrivateRoute>,
+                loader: ({params}) => fetch(`${baseURL}/api/challenges/${params.id}`),
             },
             {
-                path: '/challenges/add',
+                path: '/challenges-add',
                 element:
                     <PrivateRoute>
                         <AddChallengePage></AddChallengePage>

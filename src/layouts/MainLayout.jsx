@@ -1,7 +1,10 @@
 import React from 'react';
 import { Outlet } from 'react-router';
 import Navbar from '../components/sharedComponents/Navbar';
-import Footer from '../components/sharedComponents/Footer';
+import Footer from '../components/Footer2';
+import { ToastContainer } from 'react-toastify';
+
+
 
 const MainLayout = () => {
     return (
@@ -9,6 +12,7 @@ const MainLayout = () => {
             <Navbar></Navbar>
             <Outlet></Outlet>
             <Footer></Footer>
+            <ToastContainer></ToastContainer>
         </div>
     );
 };

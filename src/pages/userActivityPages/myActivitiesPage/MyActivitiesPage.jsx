@@ -1,9 +1,10 @@
 import React from 'react';
+import MyActivities from './MyActivities';
 
 const MyActivitiesPage = () => {
     return (
         <div>
-            MyActivitiesPage
+           <MyActivities></MyActivities>
         </div>
     );
 };

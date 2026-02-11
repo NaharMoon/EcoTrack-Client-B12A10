@@ -4,6 +4,7 @@ import { auth, googleProvider } from '../firebase/firebase.config';
 import { AuthContext } from './AuthContext';
 import { useLocation, useNavigate } from 'react-router';
 import { baseURL } from '../utilities/utility';
+import { toast } from 'react-toastify';
 
 const AuthProvider = ({ children }) => {
     const navigate = useNavigate();
@@ -43,7 +44,8 @@ const AuthProvider = ({ children }) => {
     const handleGoogleSignIn = () => {
         signInWithPopup(auth, googleProvider)
             .then(result => {
-                console.log("Successfull Google SignIn!", result.user);
+                // console.log("Successfull Google SignIn!", result.user);
+                toast.success("Login Successfull!");
 
                 // //userData
                 // const newUser = {
@@ -69,18 +71,18 @@ const AuthProvider = ({ children }) => {
                 redirect();
             })
             .catch(error => {
-                alert(error.message);
+                toast.error(error.message);
             })
     };
 
     const handleSignOut = () => {
         signOut(auth)
             .then(() => {
-                alert('Sign Out Successfull');
+                toast('Sign Out Successfull');
                 setUser(null);
             })
             .catch((error) => {
-                alert(error.message);
+                toast.error(error.message);
             })
     };
 
@@ -92,7 +94,7 @@ const AuthProvider = ({ children }) => {
                 setLoading(false);
             }
             else {
-                console.log('No signedIn user found!');
+                // console.log('No signedIn user found!');
                 setLoading(false);
             }
         })
