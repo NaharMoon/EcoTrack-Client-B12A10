@@ -1,5 +1,6 @@
 import { FaFacebookF, FaGithub, FaLinkedinIn, FaXTwitter } from "react-icons/fa6";
 import { FaLeaf, FaLocationDot, FaEnvelope, FaPhone } from "react-icons/fa6";
+import Swal from "sweetalert2";
 
 const Footer = () => {
   return (
@@ -32,16 +33,24 @@ const Footer = () => {
                 <p className="text-sm font-semibold text-white/90">
                   Get eco tips weekly
                 </p>
-                <div className="mt-2 flex gap-2">
+                <form
+                onSubmit={(e)=> {
+                  e.preventDefault();
+                  // toast("Subscription Currently Unavailable!");
+                  e.target.email.value = "";
+                  Swal.fire("Subscription Currently Unavailable!");
+                }} 
+                className="mt-2 flex gap-2">
                   <input
                     type="email"
+                    name="email"
                     placeholder="your@email.com"
                     className="input input-bordered w-full bg-white/5 border-[#1f7a5a]/50 placeholder:text-white/40 focus:outline-none focus:border-[#facc15]"
                   />
                   <button className="btn border-none bg-[#facc15] text-[#0f3d2e] hover:bg-yellow-400">
                     Join
                   </button>
-                </div>
+                </form>
                 <p className="mt-2 text-xs text-white/50">
                   No spam. Unsubscribe anytime.
                 </p>
